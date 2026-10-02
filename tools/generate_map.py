@@ -1184,8 +1184,9 @@ def export(out):
                     continue
                 name = 'c_%d_%d_%d.vox' % (cx // CHUNK, cy // CHUNK, cz // CHUNK)
                 total += write_vox(os.path.join(vox_dir, name), sub)
-                # Teardown places a vox by the centre of its bottom face
-                tx, ty, tz = to_td(cx + CHUNK / 2, cy + CHUNK / 2, cz)
+                # Teardown places a vox by the centre of the whole model
+                # (checked in game: the bottom-centre guess sank the map 6.4 m)
+                tx, ty, tz = to_td(cx + CHUNK / 2, cy + CHUNK / 2, cz + CHUNK / 2)
                 lines.append('\t\t<vox pos="%.1f %.1f %.1f" file="MOD/vox/%s"/>' % (tx, ty, tz, name))
 
     # Ground: dirt over hard masonry, larger than the map so a small pivot
