@@ -1,0 +1,181 @@
+<scene version="6" shadowVolume="140 50 140">
+	<environment template="sunny"/>
+	<spawnpoint pos="-1.2 0.2 -6.7" rot="0 0 0"/>
+	<group name="ground">
+		<voxbox pos="-66.2 -0.1 -59.8" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.5 -59.8" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.8 -59.8" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-66.2 -0.1 -34.2" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.5 -34.2" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.8 -34.2" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-66.2 -0.1 -8.6" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.5 -8.6" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.8 -8.6" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-66.2 -0.1 17.0" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.5 17.0" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.8 17.0" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-66.2 -0.1 42.6" size="256 1 172" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.5 42.6" size="256 4 172" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-66.2 -0.8 42.6" size="256 3 172" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-40.6 -0.1 -59.8" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.5 -59.8" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.8 -59.8" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-40.6 -0.1 -34.2" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.5 -34.2" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.8 -34.2" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-40.6 -0.1 -8.6" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.5 -8.6" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.8 -8.6" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-40.6 -0.1 17.0" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.5 17.0" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.8 17.0" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-40.6 -0.1 42.6" size="256 1 172" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.5 42.6" size="256 4 172" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-40.6 -0.8 42.6" size="256 3 172" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-15.0 -0.1 -59.8" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.5 -59.8" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.8 -59.8" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-15.0 -0.1 -34.2" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.5 -34.2" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.8 -34.2" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-15.0 -0.1 -8.6" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.5 -8.6" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.8 -8.6" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-15.0 -0.1 17.0" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.5 17.0" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.8 17.0" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="-15.0 -0.1 42.6" size="256 1 172" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.5 42.6" size="256 4 172" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="-15.0 -0.8 42.6" size="256 3 172" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="10.6 -0.1 -59.8" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.5 -59.8" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.8 -59.8" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="10.6 -0.1 -34.2" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.5 -34.2" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.8 -34.2" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="10.6 -0.1 -8.6" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.5 -8.6" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.8 -8.6" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="10.6 -0.1 17.0" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.5 17.0" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.8 17.0" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="10.6 -0.1 42.6" size="256 1 172" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.5 42.6" size="256 4 172" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="10.6 -0.8 42.6" size="256 3 172" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="36.2 -0.1 -59.8" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.5 -59.8" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.8 -59.8" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="36.2 -0.1 -34.2" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.5 -34.2" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.8 -34.2" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="36.2 -0.1 -8.6" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.5 -8.6" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.8 -8.6" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="36.2 -0.1 17.0" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.5 17.0" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.8 17.0" size="256 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="36.2 -0.1 42.6" size="256 1 172" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.5 42.6" size="256 4 172" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="36.2 -0.8 42.6" size="256 3 172" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="61.8 -0.1 -59.8" size="44 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.5 -59.8" size="44 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.8 -59.8" size="44 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="61.8 -0.1 -34.2" size="44 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.5 -34.2" size="44 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.8 -34.2" size="44 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="61.8 -0.1 -8.6" size="44 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.5 -8.6" size="44 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.8 -8.6" size="44 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="61.8 -0.1 17.0" size="44 1 256" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.5 17.0" size="44 4 256" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.8 17.0" size="44 3 256" color="0.35 0.34 0.33" material="hardmasonry"/>
+		<voxbox pos="61.8 -0.1 42.6" size="44 1 172" color="0.33 0.45 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.5 42.6" size="44 4 172" color="0.40 0.31 0.22" material="dirt"/>
+		<voxbox pos="61.8 -0.8 42.6" size="44 3 172" color="0.35 0.34 0.33" material="hardmasonry"/>
+	</group>
+	<group name="clark_university">
+		<vox pos="-44.8 0.0 38.4" file="MOD/vox/c_0_0_0.vox"/>
+		<vox pos="-44.8 0.0 25.6" file="MOD/vox/c_0_1_0.vox"/>
+		<vox pos="-44.8 0.0 12.8" file="MOD/vox/c_0_2_0.vox"/>
+		<vox pos="-44.8 0.0 -0.0" file="MOD/vox/c_0_3_0.vox"/>
+		<vox pos="-44.8 0.0 -12.8" file="MOD/vox/c_0_4_0.vox"/>
+		<vox pos="-44.8 0.0 -25.6" file="MOD/vox/c_0_5_0.vox"/>
+		<vox pos="-44.8 0.0 -38.4" file="MOD/vox/c_0_6_0.vox"/>
+		<vox pos="-32.0 0.0 38.4" file="MOD/vox/c_1_0_0.vox"/>
+		<vox pos="-32.0 12.8 38.4" file="MOD/vox/c_1_0_1.vox"/>
+		<vox pos="-32.0 0.0 25.6" file="MOD/vox/c_1_1_0.vox"/>
+		<vox pos="-32.0 12.8 25.6" file="MOD/vox/c_1_1_1.vox"/>
+		<vox pos="-32.0 0.0 12.8" file="MOD/vox/c_1_2_0.vox"/>
+		<vox pos="-32.0 12.8 12.8" file="MOD/vox/c_1_2_1.vox"/>
+		<vox pos="-32.0 0.0 -0.0" file="MOD/vox/c_1_3_0.vox"/>
+		<vox pos="-32.0 0.0 -12.8" file="MOD/vox/c_1_4_0.vox"/>
+		<vox pos="-32.0 0.0 -25.6" file="MOD/vox/c_1_5_0.vox"/>
+		<vox pos="-32.0 12.8 -25.6" file="MOD/vox/c_1_5_1.vox"/>
+		<vox pos="-32.0 0.0 -38.4" file="MOD/vox/c_1_6_0.vox"/>
+		<vox pos="-32.0 12.8 -38.4" file="MOD/vox/c_1_6_1.vox"/>
+		<vox pos="-19.2 0.0 38.4" file="MOD/vox/c_2_0_0.vox"/>
+		<vox pos="-19.2 12.8 38.4" file="MOD/vox/c_2_0_1.vox"/>
+		<vox pos="-19.2 0.0 25.6" file="MOD/vox/c_2_1_0.vox"/>
+		<vox pos="-19.2 12.8 25.6" file="MOD/vox/c_2_1_1.vox"/>
+		<vox pos="-19.2 0.0 12.8" file="MOD/vox/c_2_2_0.vox"/>
+		<vox pos="-19.2 12.8 12.8" file="MOD/vox/c_2_2_1.vox"/>
+		<vox pos="-19.2 0.0 -0.0" file="MOD/vox/c_2_3_0.vox"/>
+		<vox pos="-19.2 0.0 -12.8" file="MOD/vox/c_2_4_0.vox"/>
+		<vox pos="-19.2 0.0 -25.6" file="MOD/vox/c_2_5_0.vox"/>
+		<vox pos="-19.2 12.8 -25.6" file="MOD/vox/c_2_5_1.vox"/>
+		<vox pos="-19.2 0.0 -38.4" file="MOD/vox/c_2_6_0.vox"/>
+		<vox pos="-19.2 12.8 -38.4" file="MOD/vox/c_2_6_1.vox"/>
+		<vox pos="-6.4 0.0 38.4" file="MOD/vox/c_3_0_0.vox"/>
+		<vox pos="-6.4 12.8 38.4" file="MOD/vox/c_3_0_1.vox"/>
+		<vox pos="-6.4 0.0 25.6" file="MOD/vox/c_3_1_0.vox"/>
+		<vox pos="-6.4 12.8 25.6" file="MOD/vox/c_3_1_1.vox"/>
+		<vox pos="-6.4 0.0 12.8" file="MOD/vox/c_3_2_0.vox"/>
+		<vox pos="-6.4 12.8 12.8" file="MOD/vox/c_3_2_1.vox"/>
+		<vox pos="-6.4 0.0 -0.0" file="MOD/vox/c_3_3_0.vox"/>
+		<vox pos="-6.4 0.0 -12.8" file="MOD/vox/c_3_4_0.vox"/>
+		<vox pos="-6.4 0.0 -25.6" file="MOD/vox/c_3_5_0.vox"/>
+		<vox pos="-6.4 12.8 -25.6" file="MOD/vox/c_3_5_1.vox"/>
+		<vox pos="-6.4 0.0 -38.4" file="MOD/vox/c_3_6_0.vox"/>
+		<vox pos="-6.4 12.8 -38.4" file="MOD/vox/c_3_6_1.vox"/>
+		<vox pos="6.4 0.0 38.4" file="MOD/vox/c_4_0_0.vox"/>
+		<vox pos="6.4 12.8 38.4" file="MOD/vox/c_4_0_1.vox"/>
+		<vox pos="6.4 0.0 25.6" file="MOD/vox/c_4_1_0.vox"/>
+		<vox pos="6.4 12.8 25.6" file="MOD/vox/c_4_1_1.vox"/>
+		<vox pos="6.4 0.0 12.8" file="MOD/vox/c_4_2_0.vox"/>
+		<vox pos="6.4 12.8 12.8" file="MOD/vox/c_4_2_1.vox"/>
+		<vox pos="6.4 0.0 -0.0" file="MOD/vox/c_4_3_0.vox"/>
+		<vox pos="6.4 0.0 -12.8" file="MOD/vox/c_4_4_0.vox"/>
+		<vox pos="6.4 0.0 -25.6" file="MOD/vox/c_4_5_0.vox"/>
+		<vox pos="6.4 12.8 -25.6" file="MOD/vox/c_4_5_1.vox"/>
+		<vox pos="6.4 0.0 -38.4" file="MOD/vox/c_4_6_0.vox"/>
+		<vox pos="6.4 12.8 -38.4" file="MOD/vox/c_4_6_1.vox"/>
+		<vox pos="19.2 0.0 38.4" file="MOD/vox/c_5_0_0.vox"/>
+		<vox pos="19.2 12.8 38.4" file="MOD/vox/c_5_0_1.vox"/>
+		<vox pos="19.2 0.0 25.6" file="MOD/vox/c_5_1_0.vox"/>
+		<vox pos="19.2 12.8 25.6" file="MOD/vox/c_5_1_1.vox"/>
+		<vox pos="19.2 0.0 12.8" file="MOD/vox/c_5_2_0.vox"/>
+		<vox pos="19.2 12.8 12.8" file="MOD/vox/c_5_2_1.vox"/>
+		<vox pos="19.2 0.0 -0.0" file="MOD/vox/c_5_3_0.vox"/>
+		<vox pos="19.2 0.0 -12.8" file="MOD/vox/c_5_4_0.vox"/>
+		<vox pos="19.2 0.0 -25.6" file="MOD/vox/c_5_5_0.vox"/>
+		<vox pos="19.2 12.8 -25.6" file="MOD/vox/c_5_5_1.vox"/>
+		<vox pos="19.2 0.0 -38.4" file="MOD/vox/c_5_6_0.vox"/>
+		<vox pos="19.2 12.8 -38.4" file="MOD/vox/c_5_6_1.vox"/>
+		<vox pos="32.0 0.0 38.4" file="MOD/vox/c_6_0_0.vox"/>
+		<vox pos="32.0 0.0 25.6" file="MOD/vox/c_6_1_0.vox"/>
+		<vox pos="32.0 0.0 12.8" file="MOD/vox/c_6_2_0.vox"/>
+		<vox pos="32.0 0.0 -0.0" file="MOD/vox/c_6_3_0.vox"/>
+		<vox pos="32.0 0.0 -12.8" file="MOD/vox/c_6_4_0.vox"/>
+		<vox pos="32.0 0.0 -25.6" file="MOD/vox/c_6_5_0.vox"/>
+		<vox pos="32.0 12.8 -25.6" file="MOD/vox/c_6_5_1.vox"/>
+		<vox pos="32.0 0.0 -38.4" file="MOD/vox/c_6_6_0.vox"/>
+		<vox pos="32.0 12.8 -38.4" file="MOD/vox/c_6_6_1.vox"/>
+		<vox pos="44.8 0.0 38.4" file="MOD/vox/c_7_0_0.vox"/>
+		<vox pos="44.8 0.0 25.6" file="MOD/vox/c_7_1_0.vox"/>
+		<vox pos="44.8 0.0 12.8" file="MOD/vox/c_7_2_0.vox"/>
+		<vox pos="44.8 0.0 -0.0" file="MOD/vox/c_7_3_0.vox"/>
+		<vox pos="44.8 0.0 -12.8" file="MOD/vox/c_7_4_0.vox"/>
+		<vox pos="44.8 0.0 -25.6" file="MOD/vox/c_7_5_0.vox"/>
+		<vox pos="44.8 0.0 -38.4" file="MOD/vox/c_7_6_0.vox"/>
+	</group>
+</scene>
