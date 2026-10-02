@@ -1169,6 +1169,64 @@ def build():
     vary(ASPHALT, (ASPHALT2,), (0.3,))
 
 
+# Level script (multiplayer API, "#version 2").  A custom map has no game mode
+# of its own, so without this the player would have no tools: give every
+# player every tool with plenty of ammo, and keep doing it for late joiners.
+LEVEL_SCRIPT = """#version 2
+
+local BUILTIN = {"sledge", "spraycan", "extinguisher", "blowtorch", "shotgun", "plank",
+                 "pipebomb", "gun", "bomb", "rocket", "wire", "booster", "leafblower",
+                 "turbo", "explosive", "rifle", "steroid"}
+local timer = 0
+
+local function toolIds()
+    local ids, seen = {}, {}
+    for _, id in ipairs(BUILTIN) do
+        ids[#ids + 1] = id
+        seen[id] = true
+    end
+    local ok, keys = pcall(ListKeys, "game.tool")
+    if ok and keys then
+        for _, id in ipairs(keys) do
+            if not seen[id] then
+                ids[#ids + 1] = id
+                seen[id] = true
+            end
+        end
+    end
+    return ids
+end
+
+local function giveTools()
+    local ids = toolIds()
+    for _, id in ipairs(ids) do
+        pcall(SetBool, "game.tool." .. id .. ".enabled", true)
+        pcall(SetFloat, "game.tool." .. id .. ".ammo", 9999)
+    end
+    local ok, players = pcall(GetAllPlayers)
+    if ok and players then
+        for _, p in ipairs(players) do
+            for _, id in ipairs(ids) do
+                pcall(SetToolEnabled, id, true, p)
+                pcall(SetToolAmmo, id, 9999, p)
+            end
+        end
+    end
+end
+
+function server.init()
+    giveTools()
+end
+
+function server.tick(dt)
+    timer = timer + dt
+    if timer > 1 then
+        timer = 0
+        giveTools()
+    end
+end
+"""
+
 def export(out):
     vox_dir = os.path.join(out, 'vox')
     if os.path.isdir(vox_dir):
@@ -1204,10 +1262,18 @@ def export(out):
             ground_lines.append('\t\t<voxbox pos="%.1f -0.8 %.1f" size="%d 3 %d" color="0.35 0.34 0.33" material="hardmasonry"/>' % (p[0], p[1], w, d))
 
     sx, sy, sz = to_td(AXIS, 232, 3)       # on the sidewalk in front of the gate
+    # multiplayer spawn points: along the sidewalk and on the Green, facing the campus
+    spawns = [(AXIS + dx, 232) for dx in (-120, -80, -40, 40, 80, 120)]
+    spawns += [(AXIS + dx, 360) for dx in (-60, -30, 30, 60)]
+    spawns += [(600, 470), (880, 470)]
+    spawn_lines = ['\t<location tags="playerspawn" pos="%.1f %.1f %.1f" rot="0 0 0"/>'
+                   % to_td(x, y, 3) for x, y in spawns]
     xml = '\n'.join([
         '<scene version="6" shadowVolume="150 50 140">',
         '\t<environment template="sunny"/>',
         '\t<spawnpoint pos="%.1f %.1f %.1f" rot="0 0 0"/>' % (sx, sy, sz),
+        *spawn_lines,
+        '\t<script file="MOD/main.lua"/>',
         '\t<group name="ground">',
         *ground_lines,
         '\t</group>',
@@ -1219,8 +1285,11 @@ def export(out):
     ])
     with open(os.path.join(out, 'main.xml'), 'w') as f:
         f.write(xml)
+    with open(os.path.join(out, 'main.lua'), 'w') as f:
+        f.write(LEVEL_SCRIPT)
     with open(os.path.join(out, 'info.txt'), 'w') as f:
         f.write('name = Clark University\n'
+                'version = 2\n'
                 'author = stevehahahahah\n'
                 'description = Clark University, Worcester MA, laid out after aerial photos: '
                 'Main Street and the "C" gate, the Green with its big trees, Red Square with the '

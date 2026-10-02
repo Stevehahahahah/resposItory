@@ -78,6 +78,12 @@ Documents/Teardown/mods/ClarkUniversity/
 然后在游戏里打开 **Mod Manager → Local files → Clark University → Play**。
 出生点在大门外的人行道上，面朝 Jonas Clark Hall。
 
+## 道具和联机
+
+- `ClarkUniversity/main.lua` 是地图脚本：进图后会给每个玩家所有工具和大量弹药（每秒检查一次，后加入的玩家也有）。
+- `info.txt` 里有 `version = 2`，表示这是支持联机的 mod；`main.xml` 里有 12 个 `playerspawn` 出生点，用于联机模式。
+- 改完文件后要在游戏的 Mod Manager 里**更新**已发布的创意工坊物品，联机的朋友需要重新订阅/更新。
+
 ## 重新生成 / 修改
 
 ```bash

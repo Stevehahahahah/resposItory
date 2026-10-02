@@ -1,6 +1,19 @@
 <scene version="6" shadowVolume="150 50 140">
 	<environment template="sunny"/>
 	<spawnpoint pos="3.8 0.3 40.8" rot="0 0 0"/>
+	<location tags="playerspawn" pos="-8.2 0.3 40.8" rot="0 0 0"/>
+	<location tags="playerspawn" pos="-4.2 0.3 40.8" rot="0 0 0"/>
+	<location tags="playerspawn" pos="-0.2 0.3 40.8" rot="0 0 0"/>
+	<location tags="playerspawn" pos="7.8 0.3 40.8" rot="0 0 0"/>
+	<location tags="playerspawn" pos="11.8 0.3 40.8" rot="0 0 0"/>
+	<location tags="playerspawn" pos="15.8 0.3 40.8" rot="0 0 0"/>
+	<location tags="playerspawn" pos="-2.2 0.3 28.0" rot="0 0 0"/>
+	<location tags="playerspawn" pos="0.8 0.3 28.0" rot="0 0 0"/>
+	<location tags="playerspawn" pos="6.8 0.3 28.0" rot="0 0 0"/>
+	<location tags="playerspawn" pos="9.8 0.3 28.0" rot="0 0 0"/>
+	<location tags="playerspawn" pos="-10.4 0.3 17.0" rot="0 0 0"/>
+	<location tags="playerspawn" pos="17.6 0.3 17.0" rot="0 0 0"/>
+	<script file="MOD/main.lua"/>
 	<group name="ground">
 		<voxbox pos="-85.4 -0.1 -79.0" size="256 1 256" color="0.33 0.45 0.22" material="dirt"/>
 		<voxbox pos="-85.4 -0.5 -79.0" size="256 4 256" color="0.40 0.31 0.22" material="dirt"/>
