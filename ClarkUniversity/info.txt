@@ -1,4 +1,4 @@
 name = Clark University
 author = stevehahahahah
-description = Clark University, Worcester MA: Jonas Clark Hall (1887), the Higgins University Center, the Green, Red Square and the seated Sigmund Freud statue. Everything is destructible.
+description = Clark University, Worcester MA: Main Street and the "C" gate, the Green with its trees, Jonas Clark Hall (1887) and the Higgins University Center with furnished interiors, Red Square and the seated Sigmund Freud statue. Everything is destructible.
 tags = Map
