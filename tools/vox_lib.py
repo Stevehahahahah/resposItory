@@ -15,14 +15,19 @@ from PIL import Image
 
 # --------------------------------------------------------------------------
 # Palette.  In Teardown the palette *index* decides the material:
-#   1-8 glass | 9-24 grass | 25-40 dirt | 41-56 rock | 57-72 wood
-#   73-88 concrete | 89-104 brick | 105-120 plaster | 121-136 metal
-#   137-152 hard metal | 153-168 plastic | 225-240 foliage
+#   1-8 glass | 9-24 foliage | 25-40 dirt | 41-56 rock (indestructible!)
+#   57-72 wood | 73-104 masonry | 105-120 plaster | 121-136 metal
+#   137-152 heavy metal (indestructible!) | 153-168 plastic | 169-176 hard metal
+#   177-184 hard masonry | 185-192 ice | 225-240 unphysical
+#   (8 colours per row, counted from the bottom of the MagicaVoxel palette;
+#   table from the Teardown palette notes).  Nothing below uses rock or
+#   heavy metal, so every voxel of the map can be destroyed.
 # --------------------------------------------------------------------------
 GLASS, GLASS_DARK = 1, 2
 GRASS, GRASS2, GRASS3 = 9, 10, 11
 DIRT, MULCH = 25, 26
-GRANITE, GRANITE_DARK, GRANITE_TEXT, SLATE, SLATE2, CHALKBOARD = 41, 42, 43, 44, 45, 46
+GRANITE, GRANITE_DARK, GRANITE_TEXT, SLATE, SLATE2 = 96, 97, 98, 99, 100     # masonry
+CHALKBOARD = 108                                                            # plaster
 (TRUNK, DOOR_WOOD, BENCH_WOOD, FLOOR_WOOD, BOOK_RED, BOOK_BLUE, BOOK_GREEN,
  BOOK_TAN, TRUNK2) = 57, 58, 59, 60, 61, 62, 63, 64, 65
 (CONCRETE, CONCRETE2, CONCRETE_LIGHT, ASPHALT, ASPHALT2, PAINT_YELLOW,
@@ -31,11 +36,11 @@ BRICK, BRICK2, BRICK3, UC_BRICK, UC_BRICK2, PAVER, PAVER2 = 89, 90, 91, 92, 93, 
 PLASTER, TRIM, WALL_CREAM = 105, 106, 107
 (METAL_DARK, METAL_GRAY, ROOF_METAL, ROOF_METAL2, HYDRANT_RED, MAILBOX_BLUE,
  STEEL) = 121, 122, 123, 124, 125, 126, 127
-BRONZE, BRONZE_DARK, BRONZE_LIGHT = 137, 138, 139
+BRONZE, BRONZE_DARK, BRONZE_LIGHT = 128, 129, 130                      # metal
 (LAMP, BLACK_PLASTIC, RUG_RED, RUG_BLUE, SOFA_GREEN, SOFA_BROWN, CHAIR_RED,
  CHAIR_BLUE, POT, CARPET, CARPET2, WHITEBOARD) = range(153, 165)
 (LEAF, LEAF2, LEAF3, CONIFER, CONIFER2, RED_LEAF, RED_LEAF2, LOCUST, SHRUB,
- SHRUB2) = range(225, 235)
+ SHRUB2) = range(12, 22)                                               # foliage
 
 PALETTE = {
     GLASS: (120, 150, 170), GLASS_DARK: (70, 90, 110),
