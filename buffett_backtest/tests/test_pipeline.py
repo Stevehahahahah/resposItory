@@ -59,10 +59,15 @@ def test_run_end_to_end(tmp_path, monkeypatch):
     (tmp_path / "cache").mkdir()
     monkeypatch.setattr(run, "RESULTS", tmp_path / "results")
     monkeypatch.setattr(data, "yahoo_chart", fake_chart)
-    cur = pd.DataFrame({"Symbol": TICKERS[:4] + ["BANK"], "CIK": [1, 2, 3, 4, 5]})
+    cur = pd.DataFrame({"Symbol": TICKERS[:4] + ["BANK"], "CIK": [1, 2, 3, 4, 5],
+                        "Date added": ["2000-01-01"] * 3 + ["2018-06-01", "2000-01-01"]})
     ch = pd.DataFrame({"date": pd.to_datetime(["2018-06-01"]), "added": ["DDD"], "removed": ["OLDX"],
-                       "removed_name": ["Old X Inc"]})
-    monkeypatch.setattr(data, "sp500_tables", lambda: (cur, ch))
+                       "added_name": ["d"], "removed_name": ["Old X Inc"]})
+    hist = pd.Series({pd.Timestamp("2010-01-04"): {"AAA", "BBB", "CCC", "OLDX", "BANK"},
+                      pd.Timestamp("2018-06-01"): {"AAA", "BBB", "CCC", "DDD", "BANK"},
+                      pd.Timestamp("2025-08-01"): {"AAA", "BBB", "CCC", "DDD", "BANK"}})
+    monkeypatch.setattr(data, "sp500_history", lambda: hist)
+    monkeypatch.setattr(data, "sp500_wikipedia", lambda: (cur, cur, ch))
     monkeypatch.setattr(data, "sec_tickers", lambda: pd.DataFrame(
         {"ticker": TICKERS + ["OLDX"], "cik": [1, 2, 3, 4, 5, 6], "title": ["a", "b", "c", "d", "bank", "Old X Inc"]}))
     monkeypatch.setattr(data, "companyfacts", fake_facts)

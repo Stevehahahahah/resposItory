@@ -80,7 +80,7 @@ def metrics(snap, px, splits, shares, shares_filed, asof, p=DEFAULTS):
     roe = _roe(ni, eq, debt).iloc[-5:]
     last5 = s.iloc[-5:]
     n5 = last5["net_income"]
-    gm = (last5["gross_profit"] / last5["revenue"]).dropna()
+    gm = (last5["gross_profit"] / last5["revenue"]).replace([np.inf, -np.inf], np.nan).dropna()
 
     oe = last5["net_income"] + last5["da"] - last5["capex"]
     alt = last5["ocf"] - last5["capex"]

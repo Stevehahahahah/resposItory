@@ -24,7 +24,7 @@ DOLLARS_FROM = pd.Timestamp("2023-01-03")
 ROOT = Path(__file__).resolve().parent
 CUSIP_MAP = ROOT / "cusip_map.csv"
 
-CUSIP_RE = re.compile(r"(?<![0-9A-Z])([0-9]{3}[0-9A-Z]{3})[ -]?([0-9A-Z]{2})[ -]?([0-9])(?![0-9A-Z])")
+CUSIP_RE = re.compile(r"(?<![0-9A-Za-z])([0-9]{3}[0-9A-Za-z]{3})[ -]?([0-9A-Za-z]{2})[ -]?([0-9])(?![0-9A-Za-z])")
 NUM_RE = re.compile(r"(?<![\d.])\d{1,3}(?:,\d{3})+(?![\d,])|(?<![\d,.])\d+(?![\d,.])")
 
 
@@ -75,14 +75,19 @@ def parse_xml_table(root):
     return rows
 
 
+HEADER_WORDS = re.compile(r"column|issuer|class|number|thousands|amount|managers|voting|discretion|"
+                          r"sole|shared|berkshire|information table|other|total|caption", re.I)
+
+
 def parse_text_table(body):
     """Fixed-width tables of the 1999-2013 filings.
 
     A row names the issuer and CUSIP, then value (thousands) and shares.
-    Following lines that start with a number continue the same issuer (the
-    same stock held by another Berkshire subsidiary).
+    Long issuer names wrap: "American Express" on one line, "Co.  Com
+    025816 10 9 ..." on the next.  Following lines that start with a number
+    continue the same issuer (the same stock held by another subsidiary).
     """
-    rows, cur = [], None
+    rows, cur, pending = [], None, []
     for line in body.splitlines():
         if re.search(r"\b(PUT|CALL|PRN)\b", line):
             continue
@@ -90,18 +95,29 @@ def parse_text_table(body):
         if m:
             nums = NUM_RE.findall(line[m.end():])
             if len(nums) < 2:
-                cur = None
+                cur, pending = None, []
                 continue
-            cur = {"cusip": "".join(m.groups()), "name": line[:m.start()].strip()}
+            head = re.sub(r"\s{2,}.*$", "", line[:m.start()].strip())     # drop the class column
+            cur = {"cusip": "".join(m.groups()).upper(), "name": " ".join(pending + [head]).strip()}
+            pending = []
             rows.append({**cur, "value": _num(nums[0]), "shares": _num(nums[1])})
         elif cur and re.match(r"\s+\d", line):
             nums = NUM_RE.findall(line)
             if len(nums) >= 2:
                 rows.append({**cur, "value": _num(nums[0]), "shares": _num(nums[1])})
-        elif line.strip() and not re.match(r"\s", line):
+        elif re.fullmatch(r"\s*[A-Za-z][A-Za-z&.,'/\- ]*", line) and len(line.strip()) <= 40 \
+                and not HEADER_WORDS.search(line):
+            pending.append(line.strip())                  # first part of a wrapped issuer name
             cur = None
-    for r in rows:                                   # strip trailing class words from the name
-        r["name"] = re.sub(r"\s{2,}.*$", "", r["name"])
+        elif line.strip() and not re.match(r"\s", line):
+            # the rest of a wrapped name ("Federal Home / Ln Mtg Corp.") can carry a row too
+            big = re.findall(r"\d{1,3}(?:,\d{3})+", line)
+            if cur and len(big) >= 2 and not re.search(r"total", line, re.I):
+                rows.append({**cur, "value": _num(big[0]), "shares": _num(big[1])})
+            else:
+                cur, pending = None, []
+        elif line.strip():
+            pending = []
     return rows
 
 
@@ -164,7 +180,7 @@ def all_filings():
 def known_positions(h, period, asof):
     """Holdings for one quarter as known on asof: the newest full report plus later additions."""
     q = h[(h["period"] == period) & (h["filed"] <= asof)]
-    full = q[q["amendment"].isna() | (q["amendment"] == "RESTATEMENT")]
+    full = q[q["amendment"].isna() | (q["amendment"] == "RESTATEMENT")]   # filings without a table have no rows here
     if full.empty:
         return q.iloc[0:0]
     base = full[full["filed"] == full["filed"].max()]
@@ -175,6 +191,31 @@ def known_positions(h, period, asof):
 def final_positions(h):
     """Holdings of every quarter with everything that was eventually disclosed."""
     return {p: known_positions(h, p, h["filed"].max()) for p in sorted(h["period"].unique())}
+
+
+# New lines in a 13F that Berkshire did not buy: shares received in a spin-off,
+# a merger, or a reclassification of a stock it already held.
+NOT_BOUGHT = {
+    ("KRFT", "2012-12-31"): "spun off from Kraft Foods",
+    ("PSX", "2012-06-30"): "spun off from ConocoPhillips",
+    ("DNOW", "2014-06-30"): "spun off from National Oilwell Varco",
+    ("LBTYK", "2014-03-31"): "class C shares distributed by Liberty Global",
+    ("KHC", "2015-09-30"): "Kraft and Heinz merger (Berkshire owned Heinz)",
+    ("LILA", "2015-09-30"): "LiLAC tracking stock distributed by Liberty Global",
+    ("LILAK", "2015-09-30"): "LiLAC tracking stock distributed by Liberty Global",
+    ("FWONA", "2016-06-30"): "Liberty Media recapitalisation",
+    ("FWONK", "2016-06-30"): "Liberty Media recapitalisation",
+    ("LSXMA", "2016-06-30"): "Liberty Media recapitalisation",
+    ("LSXMK", "2016-06-30"): "Liberty Media recapitalisation",
+    ("OGN", "2021-06-30"): "spun off from Merck",
+    ("VTS", "2023-03-31"): "spun off from Jefferies",
+    ("BATRK", "2023-09-30"): "split off from Liberty Media",
+    ("LLYVA", "2023-09-30"): "Liberty Media reclassification",
+    ("LLYVK", "2023-09-30"): "Liberty Media reclassification",
+    ("SIRI", "2023-09-30"): "Liberty SiriusXM reorganisation",
+    ("SPY", "2019-12-31"): "index fund held by a subsidiary's manager",
+    ("VOO", "2019-12-31"): "index fund held by a subsidiary's manager",
+}
 
 
 def new_buys(h, cmap):
@@ -192,6 +233,8 @@ def new_buys(h, cmap):
         now = final[cur].assign(ticker=lambda d: d["cusip"].map(cmap))
         for t, g in now.dropna(subset=["ticker"]).groupby("ticker"):
             if t in before:
+                continue
+            if (t, str(pd.Timestamp(cur).date())) in NOT_BOUGHT:
                 continue
             first = h[(h["period"] == cur) & (h["ticker"] == t)]["filed"].min()
             out.append({"ticker": t, "period": cur, "known": first, "name": g["name"].iloc[0],
@@ -222,6 +265,20 @@ def openfigi(cusips):
     return out
 
 
+def best_name_match(name, sec_map):
+    """Ticker of the SEC company whose name shares the most words with name (all words of the shorter one)."""
+    a = data._name_tokens(name)
+    best, score = None, 0.0
+    for r in sec_map.itertuples():
+        b = data._name_tokens(r.title)
+        if not a or not b or not (a <= b or b <= a):
+            continue
+        sc = len(a & b) / len(a | b)
+        if sc > score:
+            best, score = r.ticker, sc
+    return best
+
+
 def build_cusip_map(h, sec_map):
     """Extend cusip_map.csv with any CUSIP not in it yet.
 
@@ -241,8 +298,8 @@ def build_cusip_map(h, sec_map):
     for c in todo:
         t, how = figi.get(c), "openfigi"
         if not t:
-            hits = [r.ticker for r in sec_map.itertuples() if data.names_match(names[c], r.title)]
-            t, how = (hits[0], "name") if len(hits) == 1 else ("", "unmapped")
+            t, how = (best_name_match(names[c], sec_map) or ""), "name"
+            how = how if t else "unmapped"
         new.append({"cusip": c, "issuer": names[c], "ticker": t, "method": how, "checked": ""})
     out = pd.concat([old, pd.DataFrame(new)], ignore_index=True).sort_values("issuer")
     out.to_csv(CUSIP_MAP, index=False)

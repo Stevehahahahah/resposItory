@@ -100,11 +100,20 @@ def main():
 
     # ---- S&P 500 members over time
     log("S&P 500 membership ...")
-    cur, changes = data.sp500_tables()
-    members = {d: data.sp500_members(d, cur, changes) for d in reviews}
-    ever = sorted(set().union(*members.values()))
+    hist = data.sp500_history()
+    cur, cur_old, changes = data.sp500_wikipedia()
     sec_map = data.sec_tickers()
-    ciks = data.resolve_ciks(ever, cur, changes, sec_map)
+    raw = {d: data.sp500_members(d, hist) for d in reviews}
+    for d in reviews:                                   # the daily list stops a few weeks before today
+        if d > hist.index.max() + pd.Timedelta(days=7):
+            raw[d] = set(cur["Symbol"])
+    resolved = data.resolve_tickers(sorted(set().union(*raw.values())), hist, cur, cur_old, changes, sec_map)
+    pd.DataFrame([{"ticker": t, "cik": c, "today": n, "how": w} for t, (c, n, w) in resolved.items()]) \
+        .to_csv(data.CACHE / "ticker_resolution.csv", index=False)
+    members = {d: {resolved[t][1] for t in raw[d] if t in resolved} for d in reviews}
+    ever = sorted(set().union(*members.values()))
+    ciks = {n: c for c, n, _ in resolved.values()}
+    unverified = {n for c, n, w in resolved.values() if w == "sec_unverified"}
 
     # ---- Berkshire's 13F and its purchases
     log("Berkshire 13F filings ...")
@@ -133,6 +142,15 @@ def main():
                 U.load_company(t, cik)
             except Exception as e:                       # noqa: BLE001
                 log(f"  facts {t}: {e}")
+
+    # a ticker found only in SEC's current list may belong to a newer company that reused it
+    for t in sorted(unverified):
+        comp = U.companies.get(U.cik.get(t))
+        joined = min(d for d in reviews if t in members[d])
+        if comp is None or comp.df.empty or comp.df["filed"].min() > joined:
+            log(f"  dropping {t}: that SEC company was not filing yet when {t} was in the index")
+            for d in reviews:
+                members[d].discard(t)
 
     adj = pd.DataFrame({t: p["adjclose"] for t, p in U.prices.items() if p is not None})
     adj = adj.reindex(adj.index.union(cal)).ffill().reindex(cal)
@@ -202,6 +220,7 @@ def main():
         total = b13.known_positions(h, periods.max(), f)["value"].sum()
         events.append((f, (w / total).to_dict() if total > 0 else {}))
     runs.append(bt.run_weights("C copy Berkshire 13F", events, adj, cash, reviews[0]))
+    unpriced = pd.Series({f: 1 - sum(w.values()) for f, w in events})    # held as cash in strategy C
 
     first = bt.next_day(cal, reviews[0])
     for t in ("SPY", "BRK-B"):
@@ -213,7 +232,7 @@ def main():
                            "trades": len(r["trades"])} for r in runs]).set_index("strategy")
     yearly = pd.DataFrame({r["name"]: bt.yearly(r["curve"]) for r in runs})
     coverage = pd.DataFrame([{
-        "date": d.date(), "members": len(members[d]),
+        "date": d.date(), "index_tickers": len(raw[d]), "members": len(members[d]),
         "with_cik": sum(t in U.cik for t in members[d]),
         "with_prices": sum(U.prices.get(t) is not None for t in members[d]),
         "screened": len(universe_at(d)),
@@ -255,7 +274,8 @@ def main():
     yearly.to_csv(RESULTS / "yearly.csv")
 
     plot(runs, ["A mos=25% n=10", "B n=10", "C copy Berkshire 13F", "SPY buy & hold", "BRK-B buy & hold"])
-    write_summary(table, yearly, coverage, bm, checks, pick["name"], th_now, current, end)
+    unpriced.rename("unpriced_weight").to_csv(RESULTS / "copy_13f_unpriced.csv")
+    write_summary(table, yearly, coverage, bm, checks, pick["name"], th_now, current, end, unpriced)
     log(table[["cagr", "total_return", "max_drawdown", "sharpe"]].to_string())
 
 
@@ -279,7 +299,7 @@ def pct(x):
     return "" if pd.isna(x) else f"{x:.1%}"
 
 
-def write_summary(table, yearly, coverage, bm, checks, pick, th, current, end):
+def write_summary(table, yearly, coverage, bm, checks, pick, th, current, end, unpriced):
     t = table.copy()
     for c in ("total_return", "cagr", "volatility", "max_drawdown"):
         t[c] = t[c].map(pct)
@@ -302,6 +322,7 @@ def write_summary(table, yearly, coverage, bm, checks, pick, th, current, end):
         "## 数据检查", "",
         f"- 13F 文件 {len(checks)} 份；表内合计与封面总额相差 >1% 的：{mism} 份",
         f"- 每个复查日的数据覆盖见 coverage.csv（最低 {coverage['with_metrics'].min()} / {coverage['members'].max()} 只有完整指标）",
+        f"- 策略 C：13F 里找不到价格的持仓（多为已被收购的公司）按现金处理，平均占 {unpriced.mean():.1%}，最多 {unpriced.max():.1%}",
     ]
     (RESULTS / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 

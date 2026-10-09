@@ -241,13 +241,37 @@ def test_new_buys_by_ticker():
 
 # ---------------------------------------------------------------- S&P membership, Yahoo parsing
 
-def test_sp500_members_undoes_later_changes():
-    cur = pd.DataFrame({"Symbol": ["AAA", "NEW"]})
-    ch = pd.DataFrame({"date": pd.to_datetime(["2018-01-01", "2016-01-01"]),
-                       "added": ["NEW", "AAA"], "removed": ["OLD", None]})
-    assert data.sp500_members("2019-01-01", cur, ch) == {"AAA", "NEW"}
-    assert data.sp500_members("2017-01-01", cur, ch) == {"AAA", "OLD"}
-    assert data.sp500_members("2015-01-01", cur, ch) == {"OLD"}
+def _hist(rows):
+    return pd.Series({pd.Timestamp(d): set(t) for d, t in rows}).sort_index()
+
+
+def test_sp500_members_takes_last_list_on_or_before():
+    hist = _hist([("2015-01-02", ["AAA", "OLD"]), ("2018-01-02", ["AAA", "NEW"])])
+    assert data.sp500_members("2017-12-31", hist) == {"AAA", "OLD"}
+    assert data.sp500_members("2018-01-02", hist) == {"AAA", "NEW"}
+    assert data.sp500_members("2014-01-01", hist) == set()
+
+
+def test_renames_need_original_join_date_and_no_listed_change():
+    hist = _hist([("2013-12-23", ["FB", "KEEP"]),
+                  ("2015-01-02", ["FB", "XOLD", "KEEP"]),
+                  ("2022-06-09", ["META", "XNEW", "KEEP"])])
+    changes = pd.DataFrame({"date": [pd.Timestamp("2022-06-09")], "added": ["XNEW"], "removed": ["XOLD"]})
+    added = {"META": pd.Timestamp("2013-12-23"), "XNEW": pd.Timestamp("2022-06-09"), "KEEP": pd.Timestamp("2000-01-01")}
+    assert data.find_renames(hist, changes, added) == {"FB": "META"}
+    # without the change-log entry: XNEW joined after XOLD did, and META's join date is FB's, not XOLD's
+    assert data.find_renames(hist, changes.iloc[0:0], added) == {"FB": "META"}
+
+
+def test_resolve_tickers_rejects_reused_symbols():
+    hist = _hist([("2015-01-02", ["FB", "GONE"]), ("2022-06-09", ["META"])])
+    cur = pd.DataFrame({"Symbol": ["META"], "CIK": [1326801], "Date added": ["2013-12-23"]})
+    changes = pd.DataFrame({"date": [pd.Timestamp("2022-06-09")], "added": [None], "removed": ["GONE"],
+                            "added_name": [None], "removed_name": ["Gone Stores Inc"]})
+    sec = pd.DataFrame({"ticker": ["META", "GONE"], "cik": [1326801, 999], "title": ["Meta Platforms", "Gone Mining Ltd"]})
+    r = data.resolve_tickers(["FB", "GONE", "META"], hist, cur, cur, changes, sec)
+    assert r["FB"] == (1326801, "META", "renamed") and r["META"][2] == "wikipedia"
+    assert "GONE" not in r
 
 
 def test_parse_yahoo_chart():
@@ -261,7 +285,8 @@ def test_parse_yahoo_chart():
 
 def test_names_match():
     assert data.names_match("MOODYS CORP", "Moody's Corp")
-    assert data.names_match("BANK AMER CORP", "BANK OF AMERICA CORP /DE/")
+    assert data.names_match("Moody's Corporation", "MOODYS CORP /DE/")
+    assert not data.names_match("Gone Stores Inc", "Gone Mining Ltd")
     assert not data.names_match("APPLE INC", "Applied Materials Inc")
 
 

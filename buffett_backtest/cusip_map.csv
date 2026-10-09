@@ -1,0 +1,265 @@
+cusip,issuer,ticker,method,checked
+00287Y109,ABBVIE INC,ABBV,openfigi,
+00507V109,ACTIVISION BLIZZARD INC,ATVI,manual,"Activision Blizzard, acquired by Microsoft 2023 | no Yahoo prices (delisted)"
+G0176J109,ALLEGION PLC,ALLE,name,
+02005N100,ALLY FINL INC,ALLY,openfigi,
+02079K107,ALPHABET INC,GOOG,openfigi,
+02079K305,ALPHABET INC,GOOGL,openfigi,
+023135106,AMAZON COM INC,AMZN,openfigi,
+02376R102,AMERICAN AIRLS GROUP INC,AAL,openfigi,
+025816109,AMERICAN EXPRESS CO,AXP,openfigi,
+G0403H108,AON PLC,AON,name,
+037833100,APPLE INC,AAPL,openfigi,
+039483102,ARCHER DANIELS MIDLAND CO,ADM,openfigi,
+00206R102,AT&T INC,T,openfigi,
+047726302,ATLANTA BRAVES HLDGS INC,BATRK,openfigi,
+G0750C108,AXALTA COATING SYS LTD,AXTA,manual,Axalta
+026874107,American International Group,AIG,name,
+029712106,American Standard Companies,,unmapped,
+03076C106,"Ameriprise Financial, Inc.",AMP,openfigi,
+035229103,Anheuser Busch Cos. Inc.,,manual,"Anheuser-Busch, acquired by InBev 2008"
+053015103,Automatic Data Processing,ADP,openfigi,
+060505104,BANK OF AMER CORP,BAC,openfigi,
+064058100,BANK OF NEW YORK MELLON CORP,BNY,openfigi,
+067901108,BARRICK GOLD CORPORATION,GOLD,manual,Barrick Gold
+09062X103,BIOGEN INC,BIIB,openfigi,
+110122108,BRISTOL-MYERS SQUIBB CO,BMY,openfigi,
+06423A106,Bank One Corp.,,unmapped,
+075887109,Becton Dickinson & Co.,BDX,openfigi,
+086516101,Best Buy Inc.,BBY,openfigi,
+093671105,Block H & R,HRB,openfigi,
+12189T104,Burlington Northern Santa Fe,,manual,"Burlington Northern Santa Fe, acquired by Berkshire 2010"
+14040H105,CAPITAL ONE FINL CORP,COF,openfigi,
+150870103,CELANESE CORP DEL,CE,openfigi,
+16117M305,CHARTER COMMUNICATIONS INC D,CHTR,manual,Charter class A before the 2016 merger
+16119P108,CHARTER COMMUNICATIONS INC N,CHTR,openfigi,
+166764100,CHEVRON CORPORATION,CVX,openfigi,
+167250109,CHICAGO BRIDGE & IRON CO N V,CBI,manual,"Chicago Bridge & Iron, acquired by McDermott 2018 | no Yahoo prices (delisted)"
+H1467J104,CHUBB LIMITED,CB,name,
+172967424,CITIGROUP INC,C,openfigi,
+191216100,COCA COLA CO,KO,openfigi,
+20825C104,CONOCOPHILLIPS,COP,openfigi,
+21036P108,CONSTELLATION BRANDS INC,STZ,openfigi,
+22160K105,COSTCO WHSL CORP NEW,COST,openfigi,
+126650100,CVS CAREMARK CORPORATION,CVS,openfigi,
+127209302,Cadbury Schweppes & PLC,,unmapped,
+143130102,Carmax Inc.,KMX,openfigi,
+152312104,Centex Corp.,,unmapped,
+171232101,Chubb Corp.,,manual,old Chubb Corp. (acquired by ACE 2016); CB prices are ACE
+172967101,Citigroup,C,name,
+20030N200,Comcast Corp,CMCSA,manual,"Comcast special class A, folded into CMCSA in 2015"
+200334100,Comdisco Holding Co...........,,manual,Comdisco Holding
+210371100,"Constellation Energy Group, Inc.",,manual,"Constellation Energy Group, acquired by Exelon 2012 (today's CEG is a different company)"
+22160Q102,Costco Companies,,unmapped,
+222372104,Countrywide Credit,,unmapped,
+224044957,Cox Communications Inc.,,unmapped,
+23331A109,D R HORTON INC,DHI,openfigi,
+23918K108,DAVITA INC,DVA,openfigi,
+244199105,DEERE & CO,DE,openfigi,
+247361702,DELTA AIR LINES INC,DAL,openfigi,
+25243Q205,DIAGEO PLC,DEO,openfigi,
+25490A309,DIRECTV,DTV,manual,"DIRECTV, acquired by AT&T 2015 | no Yahoo prices (delisted)"
+25490A101,DIRECTV,DTV,manual,"DIRECTV, acquired by AT&T 2015 | no Yahoo prices (delisted)"
+25470M109,DISH NETWORK CORP,DISH,manual,DISH Network | no Yahoo prices (delisted)
+256677105,DOLLAR GEN CORP NEW,DG,openfigi,
+25754A201,DOMINOS PIZZA INC,DPZ,openfigi,
+233326107,DST Systems Inc.,,unmapped,
+242370104,Dean Foods Co.,,unmapped,
+260003108,Dover Corp.,DOV,openfigi,
+260561105,"Dow Jones & Company, Inc.",,manual,Dow Jones & Co. (acquired 2007); DOW is Dow Inc.
+264399106,Duke Energy Corp.,DUK,name,
+26483B106,Dun & Bradstreet Corp.,,unmapped,
+26483E100,Dun & Bradstreet Corp.,,unmapped,
+30219G108,EXPRESS SCRIPTS HLDG CO,ESRX,manual,"Express Scripts, acquired by Cigna 2018 | no Yahoo prices (delisted)"
+30231G102,EXXON MOBIL CORP,XOM,manual,Exxon Mobil
+278058102,Eaton Corporation,ETN,manual,Eaton
+281020107,Edison International,EIX,openfigi,
+301586103,Executive Risk Inc.,,unmapped,
+339750101,FLOOR & DECOR HLDGS INC,FND,openfigi,
+302571104,FPL Group Inc.,,unmapped,
+313400301,Federal Home Ln Mtg Corp.,FMCC,openfigi,
+313586109,Federal National Mortgage Assoc.,FNMA,openfigi,
+319963104,First Data Corporation,,unmapped,
+337932107,First Energy,FE,openfigi,
+337738108,Fiserv Inc.,FISV,openfigi,
+360921100,Furniture Brands Int'l,,unmapped,
+364730101,GANNETT INC,TGNA,manual,"Gannett Co., renamed TEGNA 2015 | no Yahoo prices (delisted)"
+361448103,GATX Corp.,GATX,openfigi,
+369550108,GENERAL DYNAMICS CORP,GD,openfigi,
+369604103,GENERAL ELECTRIC CO,GE,name,
+37045V100,GENERAL MTRS CO,GM,openfigi,
+37733W105,GLAXOSMITHKLINE PLC,GSK,manual,GlaxoSmithKline ADR
+37959E102,GLOBE LIFE INC,GL,openfigi,
+38141G104,GOLDMAN SACHS GROUP INC,GS,openfigi,
+36225X100,GPU Inc.,,unmapped,
+384637104,GRAHAM HLDGS CO,GHC,openfigi,
+364760108,Gap Inc.,GAP,openfigi,
+390568103,Great Lakes Chemical Corp.,,unmapped,
+404119109,HCA Inc.,,manual,HCA before its 2006 buyout; Yahoo HCA starts at the 2011 IPO
+422806208,HEICO CORP NEW,HEI-A,openfigi,
+40434L105,HP INC,HPQ,openfigi,
+428040109,Hertz Corp.,,manual,old Hertz Corp.; HTZ is the post-bankruptcy company
+437076102,Home Depot Inc.,HD,openfigi,
+438516106,Honeywell International Inc.,HON,name,
+458140100,INTEL CORP,INTC,openfigi,
+459200101,INTERNATIONAL BUSINESS MACHS,IBM,openfigi,
+720279108,Inc.,,unmapped,
+365558105,Inc.,,unmapped,
+56418H100,Inc.,MAN,openfigi,
+462846106,Iron Mountain Inc.,IRM,manual,Iron Mountain
+47233W109,JEFFERIES FINANCIAL GROUP IN,JEF,openfigi,
+478160104,JOHNSON & JOHNSON,JNJ,openfigi,
+46625H100,JPMORGAN CHASE & CO,JPM,openfigi,
+478129109,Johns Manville Corporation,,unmapped,
+480074103,Jones Apparel Group Inc.,,unmapped,
+49456B101,KINDER MORGAN INC DEL,KMI,openfigi,
+50076Q106,KRAFT FOODS GROUP INC,KRFT,manual,"Kraft Foods Group, merged into Kraft Heinz 2015 | no Yahoo prices (delisted)"
+50075N104,KRAFT FOODS INC,MDLZ,manual,"Kraft Foods Inc., renamed Mondelez 2012"
+500754106,KRAFT HEINZ CO,KHC,openfigi,
+501044101,KROGER CO,KR,openfigi,
+493267108,Key Corp.,KEY,openfigi,
+493482103,Keystone Financial Inc.,,unmapped,
+512816109,LAMAR ADVERTISING CO NEW,LAMR,openfigi,
+523768109,LEE ENTERPRISES INC,LEE,name,
+526057104,LENNAR CORP,LEN,openfigi,
+526057302,LENNAR CORP,LEN-B,openfigi,
+G5480U120,LIBERTY GLOBAL PLC,LBTYK,manual,Liberty Global class C
+G5480U153,LIBERTY GLOBAL PLC,LILAK,manual,LiLAC tracking stock class C
+G5480U138,LIBERTY GLOBAL PLC,LILA,manual,LiLAC tracking stock class A
+G5480U104,LIBERTY GLOBAL PLC,LBTYA,manual,Liberty Global class A
+G9001E102,LIBERTY LATIN AMERICA LTD,LILA,manual,Liberty Latin America class A
+G9001E128,LIBERTY LATIN AMERICA LTD,LILAK,manual,Liberty Latin America class C
+530909308,LIBERTY LIVE HOLDINGS INC,LLYVK,openfigi,
+530909100,LIBERTY LIVE HOLDINGS INC,LLYVA,openfigi,
+530322106,LIBERTY MEDIA       LIB CAP CORPORATION,,manual,"Liberty Media (Liberty Capital) 2011-12, reorganised"
+531229854,LIBERTY MEDIA CORP DEL,FWONK,manual,Liberty Media (Formula One) group C
+531229748,LIBERTY MEDIA CORP DEL,LLYVA,manual,Liberty Live group A
+531229789,LIBERTY MEDIA CORP DEL,LSXMK,manual,Liberty SiriusXM group C (2023 reclassification) | no Yahoo prices (delisted)
+531229722,LIBERTY MEDIA CORP DEL,LLYVK,manual,Liberty Live group C
+531229813,LIBERTY MEDIA CORP DEL,LSXMA,manual,Liberty SiriusXM group A (2023 reclassification) | no Yahoo prices (delisted)
+531229755,LIBERTY MEDIA CORP DEL,FWONK,openfigi,
+531229409,LIBERTY MEDIA CORP DELAWARE,LSXMA,manual,Liberty SiriusXM group A | no Yahoo prices (delisted)
+531229300,LIBERTY MEDIA CORP DELAWARE,,manual,Liberty Media series C before the 2016 recapitalisation
+531229102,LIBERTY MEDIA CORP DELAWARE,,manual,Liberty Media series A before the 2016 recapitalisation
+531229607,LIBERTY MEDIA CORP DELAWARE,LSXMK,manual,Liberty SiriusXM group C | no Yahoo prices (delisted)
+531229870,LIBERTY MEDIA CORP DELAWARE,FWONA,manual,Liberty Media (Formula One) group A
+546347105,LOUISIANA PAC CORP,LPX,openfigi,
+505336107,La-Z-Boy,LZB,openfigi,
+52729N100,Level 3 Communications,,unmapped,
+529771107,"Lexmark International, Inc.",,unmapped,
+539320101,Liz Claiborne,,unmapped,
+548661107,Lowes Companies Inc.,LOW,openfigi,
+55261F104,M & T BK CORP,MTB,openfigi,
+55616P104,MACYS INC,M,openfigi,
+570535104,MARKEL CORP,MKL,openfigi,
+571748102,MARSH & MCLENNAN COS INC,MRSH,openfigi,
+57636Q104,MASTERCARD INCORPORATED,MA,openfigi,
+58155Q103,MCKESSON CORP,MCK,openfigi,
+584404107,MEDIA GEN INC,,manual,"Media General, acquired by Nexstar 2017"
+58441K100,MEDIA GEN INC NEW,,manual,"Media General, acquired by Nexstar 2017"
+58933Y105,MERCK & CO. INC,MRK,openfigi,
+609207105,MONDELEZ INTL INC,MDLZ,openfigi,
+615369105,MOODYS CORP,MCO,openfigi,
+61166W101,MOSANTO CO NEW,MON,manual,"Monsanto, acquired by Bayer 2018 | no Yahoo prices (delisted)"
+594918203,Microsoft Corp.,MSFT,name,
+624756102,Mueller Industries,MLI,openfigi,
+637071101,NATIONAL OILWELL VARCO INC,NOV,manual,National Oilwell Varco
+650111107,NEW YORK TIMES CO MTN BE,NYT,openfigi,
+67011P100,NOW INC,DNOW,openfigi,
+629377508,"NRG Energy, Inc.",NRG,openfigi,
+G6683N103,NU HLDGS LTD,NU,name,
+G6693N103,NU HLDGS LTD,NU,name,
+670346105,NUCOR CORP,NUE,openfigi,
+62944T105,NVR INC,NVR,openfigi,
+62985Q101,Nalco Holding Co.,,manual,"Nalco, acquired by Ecolab 2011"
+641069406,Nestle,NSRGY,openfigi,
+654106103,Nike Inc.,NKE,openfigi,
+655844108,Norfolk Southern Corp.,NSC,openfigi,
+670340105,Nucor Corp.,NUE,name,
+674599105,OCCIDENTAL PETE CORP,OXY,openfigi,
+68389X105,ORACLE CORP,ORCL,openfigi,
+68622V106,ORGANON & CO,OGN,openfigi,
+67104A101,"OSI Restaurant Partners, Inc.",,unmapped,
+676220106,Office Depot Inc.,,unmapped,
+681919106,Omnicom Group,OMC,openfigi,
+689899102,Outback Steakhouse Inc.,,unmapped,
+693718108,PACCAR Inc.,PCAR,openfigi,
+92556H206,PARAMOUNT GLOBAL,PARA,manual,Paramount Global class B
+717081103,PFIZER INC,PFE,openfigi,
+718546104,PHILLIPS 66,PSX,openfigi,
+693475105,PNC FINL SVCS GROUP INC,PNC,openfigi,
+73278L105,POOL CORP,POOL,openfigi,
+740189105,PRECISION CASTPARTS CORP,PCP,manual,"Precision Castparts, acquired by Berkshire 2016 | no Yahoo prices (delisted)"
+742718109,PROCTER & GAMBLE CO,PG,openfigi,
+693622102,"PS Group Holdings, Inc.",,manual,PS Group Holdings; PSIG is unrelated
+71646E100,Petrochina Co LTD,PCCYF,name,
+756577102,RED HAT INC,RHT,manual,"Red Hat, acquired by IBM 2019 | no Yahoo prices (delisted)"
+76131D103,RESTAURANT BRANDS INTL INC,QSR,openfigi,
+74967X103,RH,RH,openfigi,
+G7709Q104,ROYALTY PHARMA PLC,RPRX,name,
+760719104,Republic New York Corp.,,unmapped,
+760759100,Republic Services Inc.,RSG,openfigi,
+770323103,Robert Half International Inc.,RHI,openfigi,
+778296103,Ross Stores Inc.,ROST,openfigi,
+80105N105,SANOFI,SNY,openfigi,
+82968B103,SIRIUS XM HOLDINGS INC,SIRI,name,
+829933100,SIRIUSXM HOLDINGS INC,SIRI,openfigi,
+833445109,SNOWFLAKE INC,SNOW,openfigi,
+844741108,SOUTHWEST AIRLS CO,LUV,openfigi,
+78462F103,SPDR S&P 500 ETF TR,SPY,openfigi,
+85571Q102,STARZ,,manual,"Starz (2013-16), acquired by Lionsgate; today's STRZ is a different company"
+G85158106,STONECO LTD,STNE,name,
+862121100,STORE CAP CORP,STOR,manual,"STORE Capital, acquired 2023 | no Yahoo prices (delisted)"
+867224107,SUNCOR ENERGY INC NEW,SU,openfigi,
+87165B103,SYNCHRONY FINL,SYF,openfigi,
+81217K100,Sealed Air,,unmapped,
+81211K100,Sealed Air Corporation,,unmapped,
+81211K209,Sealed Air Corporation,,unmapped,
+81760N109,Servicemaster Company,,unmapped,
+82028K200,Shaw Communica- tions Inc.,,unmapped,
+820286102,Shaw Industries,,unmapped,
+867914103,Sun Trusts Banks Inc.,,manual,"SunTrust Banks, merged into Truist 2019"
+872590104,T-MOBILE US INC,TMUS,openfigi,
+874039100,TAIWAN SEMICONDUCTOR MFG LTD,TSM,openfigi,
+881624209,TEVA PHARMACEUTICAL INDS LTD,TEVA,manual,Teva ADR
+891027104,TORCHMARK CORP,GL,manual,"Torchmark, renamed Globe Life 2019"
+89417E109,TRAVELERS COMPANIES INC,TRV,openfigi,
+872241104,TV Inc.,,manual,unrelated ticker TVCN
+90130A101,TWENTY FIRST CENTY FOX INC,,manual,"Twenty-First Century Fox, acquired by Disney 2019 (today's FOXA is the spun-off Fox Corp)"
+87612E106,Target Corp,TGT,openfigi,
+882848104,Texas Utilities,,unmapped,
+375766102,The Gillette Co.,,unmapped,
+892893108,Trane Inc.,,manual,"Trane Inc. (American Standard), acquired by Ingersoll-Rand 2008"
+895953107,Tricon Global Restaurants,,unmapped,
+902124106,Tyco International LTD,,unmapped,
+903293405,U S G CORP,,manual,USG (acquired 2019); Yahoo USG is a different security
+90384S303,ULTA BEAUTY INC,ULTA,openfigi,
+910047109,UNITED CONTL HLDGS INC,UAL,openfigi,
+911312106,UNITED PARCEL SERVICE INC,UPS,openfigi,
+91324P102,UNITEDHEALTH GROUP INC,UNH,openfigi,
+911905107,US Airways Group Inc.,,unmapped,
+902973304,US BANCORP DEL,USB,openfigi,
+911596104,US Bancorp,USB,name,
+902911106,UST Inc.,,unmapped,
+907818108,Union Pacific Corp. Com,UNP,openfigi,
+922908363,VANGUARD INDEX FDS,VOO,openfigi,
+92343E102,VERISIGN INC,VRSN,openfigi,
+92345Y106,VERISK ANALYTICS INC,VRSK,openfigi,
+92343V104,VERIZON COMMUNICATIONS INC,VZ,openfigi,
+92553P201,VIACOM INC NEW,VIAB,manual,"Viacom class B, merged into ViacomCBS 2019 | no Yahoo prices (delisted)"
+92826C839,VISA INC,V,openfigi,
+92852X103,VITESSE ENERGY INC,VTS,openfigi,
+92927K102,WABCO HLDGS INC,WBC,manual,"WABCO, acquired by ZF 2020 | no Yahoo prices (delisted)"
+931142103,WAL MART STORES INC,WMT,openfigi,
+939640108,WASHINGTON POST CO,GHC,manual,"Washington Post Co., renamed Graham Holdings 2013"
+949746101,WELLS FARGO & CO NEW,WFC,openfigi,
+929251106,Wabco Holdings Inc.,,unmapped,
+930059100,Waddell & Reed,,unmapped,
+930059209,Waddell & Reed,,unmapped,
+254687106,Walt Disney Company,DIS,openfigi,
+94973V107,Wellpoint Inc.,ELV,manual,"WellPoint, renamed Anthem then Elevance"
+949740104,Wells Fargo & Co. Del,,unmapped,
+950817106,Wesco Finl Corp.,,manual,"Wesco Financial, acquired by Berkshire 2011"
+959802109,Western Union,WU,openfigi,
+972487102,WilTel Communica- tions,,unmapped,
+989390109,Zenith National Ins Corp.,,unmapped,

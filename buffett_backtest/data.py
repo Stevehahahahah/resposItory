@@ -22,6 +22,7 @@ CACHE = ROOT / "cache"
 SEC_UA = os.environ.get("SEC_USER_AGENT", "buffett-backtest (github.com/stevehahahahah)")
 WEB_UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
           "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+YAHOO_UA = "Mozilla/5.0"          # Yahoo answers 429 to a full browser string from cloud IPs
 
 _session = requests.Session()
 _last_sec = [0.0]
@@ -144,7 +145,7 @@ def yahoo_chart(symbol, start=date(2005, 1, 1), end=None):
     url = (f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
            f"?period1={_epoch(start)}&period2={_epoch(end)}&interval=1d"
            f"&events=div%2Csplit&includeAdjustedClose=true")
-    body = cached(url, f"yahoo/{symbol}_{start}_{end}.json")
+    body = cached(url, f"yahoo/{symbol}_{start}_{end}.json", ua=YAHOO_UA)
     if body is None:
         return None
     d = json.loads(body)
@@ -189,51 +190,113 @@ def split_factor_between(splits, after, upto):
 
 
 # ---------------------------------------------------------------- S&P 500 membership
+#
+# Daily membership since 1996 comes from github.com/fja05680/sp500 (Andreas
+# Clenow's list, kept up to date from S&P announcements).  It records the
+# ticker each company had on that day, so FB in 2015, META today.  Company
+# names and CIKs come from Wikipedia: today's constituent table, plus an
+# August 2026 revision that still had the long table of index changes.
+
+FJA_URL = ("https://raw.githubusercontent.com/fja05680/sp500/master/"
+           "S%26P%20500%20Historical%20Components%20%26%20Changes%20(Updated).csv")
+WIKI_URL = "https://en.wikipedia.org/w/index.php?title=List_of_S%26P_500_companies"
+WIKI_REV = 1368675864          # 10 Aug 2026, the last revision with the change log
+
 
 def _norm_ticker(t):
     return str(t).strip().upper().replace(".", "-")
 
 
-def sp500_tables():
-    """(current constituents, change log) from Wikipedia."""
-    html = cached("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", "wiki/sp500.html")
+def sp500_history():
+    """Series: date -> set of tickers in the index that day."""
+    body = cached(FJA_URL, "sp500/history.csv")
+    df = pd.read_csv(io.StringIO(body), parse_dates=["date"])
+    return pd.Series({r.date: {_norm_ticker(t) for t in r.tickers.split(",")} for r in df.itertuples()}).sort_index()
+
+
+def sp500_members(on, hist):
+    """Tickers in the index on a date (the last list on or before it)."""
+    past = hist.loc[:pd.Timestamp(on)]
+    return set(past.iloc[-1]) if len(past) else set()
+
+
+def _wiki_tables(html):
     tables = pd.read_html(io.StringIO(html))
     cur = tables[0].copy()
     cur["Symbol"] = cur["Symbol"].map(_norm_ticker)
-    ch = tables[1].copy()
-    ch.columns = ["_".join(str(x) for x in c).strip() if isinstance(c, tuple) else str(c)
-                  for c in ch.columns]
-    col = {c: c for c in ch.columns}
-    for c in ch.columns:
-        lc = c.lower()
-        if lc.startswith("date") or lc.startswith("effective date"):
-            col[c] = "date"
-        elif "added" in lc and "ticker" in lc:
-            col[c] = "added"
-        elif "added" in lc and "security" in lc:
-            col[c] = "added_name"
-        elif "removed" in lc and "ticker" in lc:
-            col[c] = "removed"
-        elif "removed" in lc and "security" in lc:
-            col[c] = "removed_name"
-    ch = ch.rename(columns=col)
-    ch["date"] = pd.to_datetime(ch["date"], errors="coerce")
-    ch = ch.dropna(subset=["date"])
-    for c in ("added", "removed"):
-        ch[c] = ch[c].map(lambda t: _norm_ticker(t) if isinstance(t, str) and t.strip() else None)
-    return cur, ch.sort_values("date")
+    ch = None
+    for t in tables[1:]:
+        if isinstance(t.columns, pd.MultiIndex) and "Added" in t.columns.get_level_values(0):
+            ch = t.copy()
+            ch.columns = ["date", "added", "added_name", "removed", "removed_name", "reason"][:len(ch.columns)]
+            ch["date"] = pd.to_datetime(ch["date"], errors="coerce")
+            for c in ("added", "removed"):
+                ch[c] = ch[c].map(lambda t: _norm_ticker(t) if isinstance(t, str) and t.strip() else None)
+            ch = ch.dropna(subset=["date"])
+    return cur, ch
 
 
-def sp500_members(on, current, changes):
-    """Tickers in the index on a date, by undoing every later change."""
-    members = set(current["Symbol"])
-    later = changes[changes["date"] > pd.Timestamp(on)].sort_values("date", ascending=False)
-    for added, removed in zip(later["added"], later["removed"]):
-        if isinstance(added, str) and added:
-            members.discard(added)
-        if isinstance(removed, str) and removed:
-            members.add(removed)
-    return members
+def sp500_wikipedia():
+    """(today's constituents, constituents in Aug 2026, change log up to Aug 2026)."""
+    now = cached("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", "wiki/sp500.html")
+    old = cached(f"{WIKI_URL}&oldid={WIKI_REV}", f"wiki/sp500_rev{WIKI_REV}.html")
+    cur, _ = _wiki_tables(now)
+    cur_old, changes = _wiki_tables(old)
+    return cur, cur_old, changes
+
+
+def membership_spans(hist):
+    """ticker -> list of (first day, last day) in the index."""
+    spans, open_ = {}, {}
+    dates = list(hist.index)
+    prev = set()
+    for d, members in zip(dates, hist.values):
+        for t in members - prev:
+            open_[t] = d
+        for t in prev - members:
+            spans.setdefault(t, []).append((open_.pop(t), d))
+        prev = members
+    for t, d0 in open_.items():
+        spans.setdefault(t, []).append((d0, None))
+    return spans
+
+
+def find_renames(hist, changes, added, window=5, since="2010-01-01"):
+    """old ticker -> new ticker, for symbol changes.
+
+    A rename shows up as one ticker leaving and another arriving on the same
+    day, but so does an index change.  It counts as a rename only if the new
+    ticker's company had already joined the index when the old ticker did
+    (Wikipedia's "Date added" keeps the original date across renames: META
+    shows 2013, when it was FB), the pair is not in the change log, and the
+    pairing is unambiguous.
+    """
+    spans = membership_spans(hist)
+    starts = [(d0, t) for t, ss in spans.items() for d0, _ in ss]
+    listed_add = {(r.added, r.date) for r in changes.itertuples() if r.added}
+    listed_rem = {(r.removed, r.date) for r in changes.itertuples() if r.removed}
+
+    def listed(pairs, t, d):
+        return any(t == x and abs((d - y).days) <= window for x, y in pairs)
+
+    out = {}
+    for old, ss in spans.items():
+        for begin, end in ss:
+            if end is None or end < pd.Timestamp(since) or listed(listed_rem, old, end):
+                continue
+            cands = [t for d0, t in starts if 0 <= (d0 - end).days <= window and t != old
+                     and not listed(listed_add, t, d0)
+                     and t in added and added[t] <= begin + pd.Timedelta(days=window)]
+            if len(cands) == 1:
+                out[old] = (cands[0], begin)
+    # Two old tickers pointing at one new ticker (two companies left that day):
+    # the one whose own join date matches the new ticker's "Date added" is it.
+    best = {}
+    for o, (n, begin) in sorted(out.items()):
+        gap = abs((begin - added[n]).days)
+        if n not in best or gap < best[n][1]:
+            best[n] = (o, gap)
+    return {o: n for n, (o, _) in best.items()}
 
 
 def _name_tokens(s):
@@ -244,27 +307,54 @@ def _name_tokens(s):
 
 
 def names_match(a, b):
+    """Same company name, give or take suffixes ("Moody's Corp" ~ "MOODYS CORP /DE/")."""
     ta, tb = _name_tokens(a), _name_tokens(b)
-    return bool(ta and tb) and len(ta & tb) / min(len(ta), len(tb)) >= 0.5
+    return bool(ta and tb) and len(ta & tb) / len(ta | tb) >= 0.5
 
 
-def resolve_ciks(tickers, current, changes, sec_map):
-    """ticker -> CIK for every ticker that was ever a member.
+def resolve_tickers(tickers, hist, cur, cur_old, changes, sec_map):
+    """Historical ticker -> (CIK, today's ticker, how it was found).
 
-    Current members carry a CIK on Wikipedia.  For removed members the SEC map
-    only knows today's owner of the ticker, which may be a different company,
-    so the names must agree.
+    1. Wikipedia constituent tables carry each company's CIK.
+    2. A renamed ticker follows its rename chain to the current symbol.
+    3. A removed ticker whose name is in the change log takes the CIK of the
+       SEC company with that ticker only if the names agree (symbols get reused).
+    4. Otherwise the SEC ticker is accepted provisionally ("sec_unverified");
+       run.py drops it unless that company was filing before it joined.
     """
-    out = {}
-    cur_cik = dict(zip(current["Symbol"], current.get("CIK", pd.Series(dtype=float))))
+    wiki = {}
+    for t in (cur_old, cur):                       # today's table wins
+        for r in t.itertuples():
+            if pd.notna(getattr(r, "CIK", None)):
+                wiki[r.Symbol] = int(r.CIK)
     names = {}
-    for t, n in zip(changes["removed"], changes.get("removed_name", changes["removed"])):
-        if isinstance(t, str):
-            names[t] = n
-    sec = sec_map.set_index("ticker")
+    for r in changes.itertuples():
+        if r.removed:
+            names.setdefault(r.removed, r.removed_name)
+        if r.added:
+            names.setdefault(r.added, r.added_name)
+    added = {}
+    for t in (cur_old, cur):
+        for sym, d in zip(t["Symbol"], pd.to_datetime(t.get("Date added"), errors="coerce")):
+            if pd.notna(d):
+                added[sym] = d
+    renames = find_renames(hist, changes, added)
+    sec = sec_map.drop_duplicates("ticker").set_index("ticker")
+    by_cik = sec_map.groupby("cik")["ticker"].first().to_dict()
+
+    out = {}
     for t in tickers:
-        if t in cur_cik and pd.notna(cur_cik[t]):
-            out[t] = int(cur_cik[t])
-        elif t in sec.index and (t not in names or names_match(names[t], sec.at[t, "title"])):
-            out[t] = int(sec.at[t, "cik"])
+        final, seen = t, {t}
+        while final in renames and renames[final] not in seen:
+            final = renames[final]
+            seen.add(final)
+        how = "renamed" if final != t else ""
+        if final in wiki:
+            cik = wiki[final]
+            out[t] = (cik, by_cik.get(cik, final), how or "wikipedia")
+        elif final in sec.index:
+            cik, title = int(sec.at[final, "cik"]), sec.at[final, "title"]
+            if t in names and not names_match(names[t], title):
+                continue                           # same symbol, different company
+            out[t] = (cik, final, how or ("name" if t in names else "sec_unverified"))
     return out
