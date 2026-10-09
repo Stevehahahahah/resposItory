@@ -91,6 +91,7 @@ def metrics(snap, px, splits, shares, shares_filed, asof, p=DEFAULTS):
              for x, f in zip(s["diluted_shares"], s["shares_filed"])]
     sh = pd.Series(today, index=s.index)
     sh5 = sh.iloc[-5:].dropna()
+    sh5 = sh5[sh5 > 0]
     dilution = sh5.iloc[-1] / sh5.iloc[0] - 1 if len(sh5) >= 2 else float("nan")
 
     g = cagr(n5.iloc[0], n5.iloc[-1], len(n5) - 1)
