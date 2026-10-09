@@ -20,25 +20,29 @@
 ## 运行
 
 ```bash
-pip install -r requirements.txt
-python corpus.py fetch            # 下载信件、股东大会文字稿、讲座 → cache/corpus/，清单在 sources.csv
-python berkshire_13f.py           # 伯克希尔全部 13F → cache/，并生成 cusip_map.csv（需要人工核对）
-python run.py                     # 回测 + 今日持仓 → results/
-python -m pytest tests            # 离线测试（用的是人工构造的数据）
+pip install -r requirements.txt          # 另需 tesseract-ocr 和 poppler-utils（给扫描版合伙人信件做 OCR）
+export SEC_USER_AGENT="你的名字 你的邮箱"   # SEC 要求请求带联系方式，否则返回 403
+python corpus.py fetch                   # 信件、讲座、访谈 → cache/corpus/，清单写入 sources.csv
+python corpus.py grep "owner earnings"   # 在语料里查原文
+python berkshire_13f.py                  # 伯克希尔全部 13F → cache/，新 CUSIP 追加到 cusip_map.csv
+python run.py --end 2026-10-09           # 回测 + 今日持仓 → results/（第一次约 1 小时，之后有缓存）
+python -m pytest tests                   # 离线测试（用人工构造的数据）
 ```
 
-SEC 要求请求带上联系方式，可以用环境变量设置：`SEC_USER_AGENT="名字 邮箱"`。
+## 数据从哪来
 
-## 网络
-
-需要访问的网站：
-
-- `data.sec.gov`、`www.sec.gov`：财报 XBRL、伯克希尔 13F
-- `query1.finance.yahoo.com`、`query2.finance.yahoo.com`：价格、分红、拆股
-- `en.wikipedia.org`：标普 500 历史成分
-- `api.openfigi.com`：13F 里的 CUSIP 转成股票代码
-- `www.berkshirehathaway.com`、`buffett.cnbc.com`、`warrenbuffett.com`：信件、股东大会文字稿
-- 讲座文字稿分散在很多网站（见 `lectures.csv`），所以下载语料这一步最好临时把网络权限设为完全访问
+| 内容 | 来源 | 说明 |
+|---|---|---|
+| 致股东信 1977–2024 | berkshirehathaway.com | 1998–2003 年的页面只是跳转说明，程序会跟着链接下载真正的信 |
+| 合伙人信件 1959–1970、致股东信 1972–1976 | rbcpa.com | 合伙人信件是扫描件，用 tesseract 做 OCR |
+| 他 2021–2025 年的公开信、所有者手册 | berkshirehathaway.com | 2025 年的年度信是 Greg Abel 写的，单独标出，不算巴菲特本人的话 |
+| 讲座、文章 | `lectures.csv` 里列的各个网站 | 1984 年哥伦比亚大学演讲、1998 年佛罗里达大学讲座、1977 和 1999 年发表在 Fortune 上的文章等 |
+| 访谈和讲座笔记（47 篇） | rbcpa.com（WordPress 接口） | CNBC 访谈、Charlie Rose 访谈、学生问答笔记等 |
+| 股东大会问答 | buffettfaq.com | CNBC 的巴菲特档案（大会完整视频和文字稿）拒绝云服务器的请求，所以改用这个按主题整理、标了年份的问答集 |
+| 伯克希尔 13F（1999–2026，211 份） | SEC EDGAR | 2013 年以后是 XML，之前是固定宽度的文本表；CUSIP 先用 OpenFIGI 自动对应股票代码，再人工核对（`cusip_map.csv` 的 checked 列写了原因） |
+| 财报 | SEC XBRL companyfacts | 带提交日期，做到"复查日当天能看到什么就用什么" |
+| 价格、分红、拆股 | Yahoo Finance | 退市股票通常没有数据 |
+| 每天的标普 500 成分股 | [fja05680/sp500](https://github.com/fja05680/sp500) | 记录的是当天的股票代码（2015 年的 FB 就是现在的 META）。公司名称和 CIK 来自 Wikipedia：今天的成分股表，加上 2026 年 8 月一版还保留着变动记录的页面 |
 
 ## 输出（`results/`）
 
@@ -59,7 +63,7 @@ SEC 要求请求带上联系方式，可以用环境变量设置：`SEC_USER_AGE
 - **不偷看 13F**：伯克希尔的持仓从 13F 提交日才算公开；保密持仓从补充披露那天才算。
 - **拆股**：股数统一换算成今天的股本口径再和价格比较，避免拆股前后股数、价格对不上，把估值算错好几倍。
 - **成交**：根据复查日收盘时的数据做决定，第二个交易日收盘成交，每笔扣 0.1% 成本。
-- **成分股**：用 Wikipedia 的成分变动表倒推每个复查日的标普 500 成分。
+- **成分股**：用每天的历史成分股名单，不是今天的名单。旧代码靠"同一天一个代码退出、另一个进入，而且新代码公司当初加入指数的日期和旧代码一致"来识别改名（FB → META）；一个代码如果现在属于另一家公司（代码被重新使用），就不拿来用。
 
 ## 局限
 
@@ -67,4 +71,6 @@ SEC 要求请求带上联系方式，可以用环境变量设置：`SEC_USER_AGE
 - XBRL 财报从 2009 年左右才完整，所以回测从 2015 年开始（规则需要 5 年历史数据）。
 - 2011 年后伯克希尔的部分持仓是 Todd Combs 和 Ted Weschler 买的，13F 里分不出来。
 - 金融股被排除在外，但伯克希尔本身持有很多银行和保险股。
-- "所有讲座"做不到 100%：很多早年讲座没有文字稿，`sources.csv` 会列出收录了哪些、缺哪些。
+- "所有讲座"做不到 100%：很多早年讲座没有文字稿。1991 年圣母大学讲座的全文原本放在 tilsonfunds.com，这个网站已经停了，只拿到了摘要。CNBC 的股东大会完整文字稿拿不到（见上表）。`sources.csv` 列出了收录的全部内容。
+- 13F 里有些持仓后来被收购、退市，Yahoo 上没有价格（比如 Precision Castparts、Red Hat、Monsanto、STORE Capital、Activision）。策略 C 把这部分权重按现金处理，策略 B 学习买入标准时也少了这些样本。
+- 市值用的是稀释后加权平均股数，比实际流通股数略多，所以估值会稍微保守一点。
