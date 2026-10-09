@@ -1,0 +1,10 @@
+pandas
+numpy
+requests
+matplotlib
+lxml
+beautifulsoup4
+html5lib
+pdfplumber
+tabulate
+pytest

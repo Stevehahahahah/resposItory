@@ -1,2 +1,4 @@
 __pycache__/
 *.pyc
+buffett_backtest/cache/
+.pytest_cache/
