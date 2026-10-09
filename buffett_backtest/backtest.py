@@ -128,7 +128,7 @@ def run_rules(name, reviews, adj, cash, metric_at, universe_at, thresholds_at, n
             strikes[h] = strikes.get(h, 0) + 1 if bad else 0
             if strikes[h] >= 2:
                 book.sell(h, e, "quality broke twice: " + ",".join(bad))
-            elif m is not None and m["mos"] < -th["sell_over"]:
+            elif m is not None and np.isfinite(m["mos"]) and m["mos"] < -th["sell_over"]:
                 book.sell(h, e, f"price {1 - m['mos']:.2f}x intrinsic value")
         cands = []
         for tk in universe_at(t):
